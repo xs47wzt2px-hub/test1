@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家庭医疗知识普及 - PRCC与输液港维护指南</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#10b981',
+                        accent: '#f59e0b',
+                        danger: '#ef4444',
+                        light: '#f3f4f6',
+                        dark: '#1f2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                        serif: ['Georgia', 'Cambria', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto { content-visibility: auto; }
+            .text-shadow { text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            .card-hover { transition: all 0.3s ease; }
+            .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
+            .btn-hover { transition: all 0.2s ease; }
+            .btn-hover:hover { transform: translateY(-2px); }
+            .btn-hover:active { transform: translateY(0); }
+            .transition-smooth { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+            .touch-target { min-height: 48px; min-width: 48px; }
+        }
+    </style>
+    <style>
+        /* 老年版样式 */
+          .elderly-mode {
+              font-size: 1.25rem;
+              line-height: 1.6;
+          }
+          .elderly-mode .btn {
+              padding: 0.75rem 1.5rem;
+              font-size: 1.25rem;
+          }
+          .elderly-mode .card {
+              padding: 1.5rem;
+          }
+          
+          /* 移动端优化 */
+          @media (max-width: 640px) {
+              .section {
+                  padding-top: 120px;
+                  padding-bottom: 120px;
+              }
+              
+              /* 确保触摸目标足够大 */
+              button, a {
+                  min-height: 44px;
+                  display: flex;
+                  align-items: center;
+              }
+          }
+        .elderly-mode .text-lg {
+            font-size: 1.5rem;
+        }
+        .elderly-mode .text-xl {
+            font-size: 1.75rem;
+        }
+        .elderly-mode .text-2xl {
+            font-size: 2rem;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        /* 通知动画 */
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes fadeOutScale {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+        }
+        
+        .section {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .section.active {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* 滚动进度条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-md fixed w-full top-0 z-50 transition-smooth" id="navbar">
+        <div class="container mx-auto px-4 py-3 sm:py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-medkit text-primary text-2xl sm:text-3xl"></i>
+                <h1 class="text-lg sm:text-xl font-bold text-primary">家庭医疗知识普及</h1>
+            </div>
+            <nav class="hidden md:flex items-center space-x-4 sm:space-x-6">
+                <a href="#home" class="nav-link text-gray-600 hover:text-primary transition-colors py-2">首页</a>
+                <a href="#guide-selection" class="nav-link text-gray-600 hover:text-primary transition-colors py-2">指南选择</a>
+                <a href="#about" class="nav-link text-gray-600 hover:text-primary transition-colors py-2">关于我们</a>
+                <a href="#contact" class="nav-link text-gray-600 hover:text-primary transition-colors py-2">联系我们</a>
+            </nav>
+            <button class="md:hidden text-gray-600 touch-target flex items-center justify-center" id="mobile-menu-btn">
+                <i class="fa fa-bars text-2xl"></i>
+            </button>
+        </div>
+        <!-- 移动端菜单 -->
+        <div class="md:hidden hidden bg-white w-full shadow-lg absolute top-full left-0" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-1">
+                <a href="#home" class="py-3 text-gray-600 hover:text-primary transition-colors text-lg border-b border-gray-100">首页</a>
+                <a href="#guide-selection" class="py-3 text-gray-600 hover:text-primary transition-colors text-lg border-b border-gray-100">指南选择</a>
+                <a href="#about" class="py-3 text-gray-600 hover:text-primary transition-colors text-lg border-b border-gray-100">关于我们</a>
+                <a href="#contact" class="py-3 text-gray-600 hover:text-primary transition-colors text-lg">联系我们</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="pt-20 pb-16">
+        <!-- 首页横幅 -->
+        <section id="home" class="section bg-gradient-to-r from-blue-50 to-green-50 py-20">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-primary mb-6 text-shadow">家庭医疗知识普及</h2>
+                <p class="text-[clamp(1.1rem,2vw,1.3rem)] text-gray-600 max-w-3xl mx-auto mb-10">
+                    专业的PRCC与输液港家庭维护指南，帮助您和家人安全、正确地进行日常护理
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#guide-selection" class="btn btn-hover bg-primary hover:bg-primary/90 text-white font-medium py-4 px-8 rounded-full shadow-lg flex items-center justify-center touch-target">
+                        <i class="fa fa-book mr-2"></i> 开始学习
+                    </a>
+                    <a href="#about" class="btn btn-hover bg-white hover:bg-gray-50 text-primary border border-primary font-medium py-4 px-8 rounded-full shadow-md flex items-center justify-center touch-target">
+                        <i class="fa fa-info-circle mr-2"></i> 了解更多
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 指南选择区域 -->
+        <section id="guide-selection" class="section py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-center text-primary mb-12">选择适合您的指南版本</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10 max-w-5xl mx-auto px-2 sm:px-4">
+                    <!-- 普通版 -->
+                    <div class="card card-hover bg-white rounded-xl shadow-lg p-6 sm:p-8 border border-gray-100">
+                        <div class="text-center mb-6">
+                            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-100 mb-4">
+                                <i class="fa fa-user-md text-3xl text-primary"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">普通版</h3>
+                            <p class="text-gray-500 mt-2">标准字体大小，详细专业的医疗指导</p>
+                        </div>
+                        <div class="space-y-4">
+                            <button onclick="switchToGuide('normal', 'prcc')" class="w-full btn btn-hover bg-primary hover:bg-primary/90 text-white py-4 px-6 rounded-lg shadow flex items-center justify-center touch-target">
+                                <i class="fa fa-heartbeat mr-2"></i> PRCC维护指南
+                            </button>
+                            <button onclick="switchToGuide('normal', 'port')" class="w-full btn btn-hover bg-secondary hover:bg-secondary/90 text-white py-4 px-6 rounded-lg shadow flex items-center justify-center touch-target">
+                                <i class="fa fa-medkit mr-2"></i> 输液港维护指南
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- 老年版 -->
+                    <div class="card card-hover bg-white rounded-xl shadow-lg p-6 sm:p-8 border border-gray-100">
+                        <div class="text-center mb-6">
+                            <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-4">
+                                <i class="fa fa-users text-3xl text-secondary"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">老年版</h3>
+                            <p class="text-gray-500 mt-2">加大字体，简化语言，更易阅读和理解</p>
+                        </div>
+                        <div class="space-y-4">
+                            <button onclick="switchToGuide('elderly', 'prcc')" class="w-full btn btn-hover bg-primary hover:bg-primary/90 text-white py-4 px-6 rounded-lg shadow flex items-center justify-center touch-target">
+                                <i class="fa fa-heartbeat mr-2"></i> PRCC维护指南
+                            </button>
+                            <button onclick="switchToGuide('elderly', 'port')" class="w-full btn btn-hover bg-secondary hover:bg-secondary/90 text-white py-4 px-6 rounded-lg shadow flex items-center justify-center touch-target">
+                                <i class="fa fa-medkit mr-2"></i> 输液港维护指南
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 指南内容区域 -->
+        <section id="guide-content" class="section py-16 bg-gray-50 hidden">
+            <div class="container mx-auto px-4">
+                <div class="flex justify-between items-center mb-6 sm:mb-8">
+                    <button onclick="backToSelection()" class="btn btn-hover flex items-center text-primary hover:text-primary/80 text-lg py-3 px-4 touch-target">
+                        <i class="fa fa-arrow-left mr-2"></i> 返回选择
+                    </button>
+                    <div id="guide-breadcrumb" class="text-gray-500 text-sm sm:text-base"></div>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6 md:p-8" id="guide-container">
+                    <!-- 指南内容将通过JavaScript动态加载 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 关于我们 -->
+        <section id="about" class="section py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-center text-primary mb-12">关于我们</h2>
+                <div class="max-w-4xl mx-auto bg-gray-50 rounded-xl p-8 shadow-md">
+                    <div class="flex flex-col md:flex-row items-center gap-6 sm:gap-8 px-2 sm:px-4">
+                        <div class="w-full md:w-1/3">
+                            <div class="w-40 h-40 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
+                                <i class="fa fa-hospital-o text-5xl text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="w-full md:w-2/3">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">我们的使命</h3>
+                            <p class="text-gray-600 mb-4">
+                                我们致力于为患者和家属提供专业、易懂的家庭医疗护理知识，特别是关于PRCC和输液港等长期静脉通路装置的维护指南。
+                            </p>
+                            <p class="text-gray-600 mb-4">
+                                通过提供标准化、可视化的护理指导，帮助患者在家中安全地进行日常护理，减少并发症的发生，提高生活质量。
+                            </p>
+                            <p class="text-gray-600">
+                                所有内容均由专业医疗团队审核，确保信息的准确性和实用性。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系我们 -->
+        <section id="contact" class="section py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-center text-primary mb-12">联系我们</h2>
+                <div class="max-w-4xl mx-auto">
+                    <div class="bg-white rounded-xl shadow-lg p-8">
+                        <div class="max-w-lg mx-auto">
+                            <h3 class="text-xl font-bold text-gray-800 mb-6 text-center">联系方式</h3>
+                            <div class="space-y-6">
+                                <div class="flex items-start">
+                                    <i class="fa fa-envelope text-primary mt-1 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-medium text-gray-800">电子邮件</h4>
+                                        <p class="text-gray-600">contact@familymedicalguide.com</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fa fa-phone text-primary mt-1 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-medium text-gray-800">咨询电话</h4>
+                                        <p class="text-gray-600">400-123-4567</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <i class="fa fa-clock-o text-primary mt-1 mr-3"></i>
+                                    <div>
+                                        <h4 class="font-medium text-gray-800">服务时间</h4>
+                                        <p class="text-gray-600">周一至周五 9:00-17:00</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fa fa-medkit text-primary text-2xl"></i>
+                        <h3 class="text-xl font-bold">家庭医疗知识普及</h3>
+                    </div>
+                    <p class="text-gray-400">
+                        专业的家庭医疗护理指南，守护您和家人的健康
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">快速链接</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">首页</a></li>
+                        <li><a href="#guide-selection" class="text-gray-400 hover:text-white transition-colors">指南选择</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition-colors">关于我们</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">联系我们</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">关注我们</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-qq"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400 mt-4">
+                        扫描二维码关注公众号<br>
+                        获取更多健康资讯
+                    </p>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>© 2024 家庭医疗知识普及平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-6 right-6 bg-primary text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center opacity-0 invisible transition-all duration-300 hover:bg-primary/90 touch-target">
+        <i class="fa fa-arrow-up text-xl"></i>
+    </button>
+
+    <!-- 通知提示框 -->
+    <div id="notification" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-4 py-3 sm:px-6 rounded-lg shadow-xl max-w-[90%] opacity-0 invisible transition-all duration-300 z-50"></div>
+
+    <script>
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 显示页面元素动画
+            const sections = document.querySelectorAll('.section');
+            sections.forEach((section, index) => {
+                setTimeout(() => {
+                    section.classList.add('active');
+                }, index * 100);
+            });
+            
+            // 移动端菜单切换
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (mobileMenu.classList.contains('hidden')) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                    // 启用页面滚动
+                    document.body.style.overflow = '';
+                } else {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                    // 禁用页面滚动，防止菜单打开时滚动页面
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+            
+            // 点击移动端菜单外部关闭菜单
+            document.addEventListener('click', function(e) {
+                if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target) && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                    document.body.style.overflow = '';
+                }
+            });
+            
+            // 导航栏滚动效果 - 使用节流优化性能
+            const navbar = document.getElementById('navbar');
+            let lastScrollTop = 0;
+            let ticking = false;
+            
+            function handleScroll() {
+                const scrollTop = window.scrollY;
+                
+                // 导航栏样式变化
+                if (scrollTop > 10) {
+                    navbar.classList.add('py-2', 'bg-white/95', 'backdrop-blur-sm');
+                    navbar.classList.remove('py-3');
+                } else {
+                    navbar.classList.add('py-3');
+                    navbar.classList.remove('py-2', 'bg-white/95', 'backdrop-blur-sm');
+                }
+                
+                // 显示/隐藏回到顶部按钮
+                const backToTopBtn = document.getElementById('back-to-top');
+                if (scrollTop > 300) {
+                    backToTopBtn.classList.remove('opacity-0', 'invisible');
+                    backToTopBtn.classList.add('opacity-100', 'visible');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'invisible');
+                    backToTopBtn.classList.remove('opacity-100', 'visible');
+                }
+                
+                lastScrollTop = scrollTop;
+                ticking = false;
+            }
+            
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(handleScroll);
+                    ticking = true;
+                }
+            });
+            
+            // 回到顶部功能
+            document.getElementById('back-to-top').addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // 平滑滚动到锚点 - 优化移动端体验
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // 关闭移动端菜单
+                        if (!mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                            const icon = mobileMenuBtn.querySelector('i');
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                            document.body.style.overflow = '';
+                        }
+                        
+                        const navbarHeight = navbar.offsetHeight;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+                        
+                        // 优化滚动体验，增加触觉反馈（如果设备支持）
+                        if (navigator.vibrate) {
+                            navigator.vibrate(10);
+                        }
+                        
+                        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                    }
+                });
+            });
+            
+            // 联系表单已移除
+        });
+        
+        // 切换到指南页面
+        function switchToGuide(mode, type) {
+            // 隐藏选择页面，显示内容页面
+            document.getElementById('guide-selection').classList.add('hidden');
+            document.getElementById('about').classList.add('hidden');
+            document.getElementById('contact').classList.add('hidden');
+            document.getElementById('guide-content').classList.remove('hidden');
+            
+            // 添加/移除老年模式类
+            const guideContainer = document.getElementById('guide-container');
+            if (mode === 'elderly') {
+                guideContainer.classList.add('elderly-mode');
+            } else {
+                guideContainer.classList.remove('elderly-mode');
+            }
+            
+            // 更新面包屑导航
+            const modeText = mode === 'elderly' ? '老年版' : '普通版';
+            const typeText = type === 'prcc' ? 'PRCC维护指南' : '输液港维护指南';
+            document.getElementById('guide-breadcrumb').textContent = `${modeText} > ${typeText}`;
+            
+            // 加载对应指南内容
+            loadGuideContent(mode, type);
+            
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // 返回选择页面
+        function backToSelection() {
+            document.getElementById('guide-content').classList.add('hidden');
+            document.getElementById('guide-selection').classList.remove('hidden');
+            document.getElementById('about').classList.remove('hidden');
+            document.getElementById('contact').classList.remove('hidden');
+        }
+        
+        // 加载指南内容
+        function loadGuideContent(mode, type) {
+            const guideContainer = document.getElementById('guide-container');
+            let content = '';
+            
+            if (type === 'prcc') {
+                content = generatePRCCGuide(mode);
+            } else {
+                content = generatePortGuide(mode);
+            }
+            
+            guideContainer.innerHTML = content;
+            
+            // 为新添加的元素添加事件监听
+            attachGuideEventListeners();
+        }
+        
+        // 生成PRCC维护指南内容
+        function generatePRCCGuide(mode) {
+            const isElderly = mode === 'elderly';
+            const headingSize = isElderly ? 'text-3xl' : 'text-2xl';
+            const subheadingSize = isElderly ? 'text-2xl' : 'text-xl';
+            
+            return `
+                <div>
+                    <h2 class="${headingSize} font-bold text-primary mb-6">PRCC维护指南</h2>
+                    
+                    <div class="prose max-w-none ${isElderly ? 'elderly-mode' : ''}">
+                        <p class="mb-6 text-gray-700">
+                            经外周静脉穿刺中心静脉导管（Peripherally Inserted Central Catheter，简称PRCC或PICC）是一种长期静脉通路装置。正确的家庭维护对于延长导管使用寿命、减少并发症至关重要。
+                        </p>
+                        
+                        <div class="bg-blue-50 rounded-lg p-6 mb-8">
+                            <h3 class="${subheadingSize} font-bold text-primary mb-4">目录</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li><a href="#prcc-basics" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> PRCC基本知识</a></li>
+                                <li><a href="#prcc-daily-care" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 日常护理要点</a></li>
+                                <li><a href="#prcc-dressing-change" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 敷料更换步骤</a></li>
+                                <li><a href="#prcc-flushing" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 导管冲洗方法</a></li>
+                                <li><a href="#prcc-complications" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 常见并发症及处理</a></li>
+                                <li><a href="#prcc-notes" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 注意事项</a></li>
+                            </ul>
+                        </div>
+                        
+                        <section id="prcc-basics" class="mb-10 scroll-mt-20">
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-info-circle text-primary mr-3"></i> PRCC基本知识</h3>
+                            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                                <p class="mb-4 text-gray-700">
+                                    PRCC是一种从外周手臂静脉插入，末端位于上腔静脉或锁骨下静脉的导管。它可以用于长期输液、化疗、营养支持等治疗。
+                                </p>
+                                <div class="bg-blue-100 rounded-lg p-4 mb-4">
+                                    <h4 class="font-bold text-gray-800 mb-2">PRCC的优点：</h4>
+                                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                        <li>减少反复静脉穿刺的痛苦</li>
+                                        <li>保护外周静脉</li>
+                                        <li>适合长期输液治疗</li>
+                                        <li>可在家中由家属协助护理</li>
+                                    </ul>
+                                </div>
+                                <div class="relative overflow-hidden rounded-lg shadow-md mb-4">
+                                    <img src="https://picsum.photos/id/237/800/400" alt="PRCC导管示意图" class="w-full h-auto object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-3">
+                                        <p class="text-white text-center text-sm">PRCC导管示意图</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section id="prcc-daily-care" class="mb-10 scroll-mt-20">
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-heartbeat text-primary mr-3"></i> 日常护理要点</h3>
+                            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="bg-green-50 rounded-lg p-4">
+                                        <h4 class="font-bold text-gray-800 mb-3">保持清洁干燥</h4>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li>穿刺部位需保持清洁干燥</li>
+                                            <li>避免沾水，洗澡时可使用防水敷料保护</li>
+                                            <li>出汗较多时及时告知医护人员</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-yellow-50 rounded-lg p-4">
+                                        <h4 class="font-bold text-gray-800 mb-3">观察穿刺部位</h4>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li>每天检查穿刺部位是否有红肿、渗液</li>
+                                            <li>注意观察是否有疼痛、硬结</li>
+                                            <li>如有异常及时联系医护人员</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-blue-50 rounded-lg p-4">
+                                        <h4 class="font-bold text-gray-800 mb-3">避免导管受压</h4>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li>睡眠时避免压迫穿刺侧手臂</li>
+                                            <li>避免提重物或过度活动穿刺侧手臂</li>
+                                            <li>穿衣时避免衣物摩擦导管</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-purple-50 rounded-lg p-4">
+                                        <h4 class="font-bold text-gray-800 mb-3">定期维护</h4>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li>按照医护人员指导定期更换敷料</li>
+                                            <li>定期进行导管冲洗</li>
+                                            <li>记录维护日期和情况</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section id="prcc-dressing-change" class="mb-10 scroll-mt-20">
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-medkit text-primary mr-3"></i> 敷料更换步骤</h3>
+                            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                                <p class="mb-4 text-gray-700">
+                                    敷料更换通常每7天进行一次，如有渗液、潮湿或松动应及时更换。请由专业医护人员操作或在其指导下进行。
+                                </p>
+                                
+                                <div class="space-y-6">
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">1</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">准备用物</h4>
+                                            <p class="text-gray-700">
+                                                准备无菌手套、无菌敷料（透明贴膜或纱布）、酒精棉片、碘伏棉片、无菌生理盐水、肝素帽（如需更换）等。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">2</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">洗手并戴手套</h4>
+                                            <p class="text-gray-700">
+                                                操作者按七步洗手法彻底洗手，然后戴无菌手套。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">3</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">移除旧敷料</h4>
+                                            <p class="text-gray-700">
+                                                从下往上轻轻撕除旧敷料，注意固定导管，避免牵拉。如敷料粘贴紧密，可先用生理盐水湿润后再移除。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">4</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">消毒穿刺部位</h4>
+                                            <p class="text-gray-700">
+                                                用酒精棉片以穿刺点为中心，顺时针、逆时针交替消毒，范围至少10cm，待干。再用碘伏棉片以同样方法消毒，待干。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">5</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">更换敷料</h4>
+                                            <p class="text-gray-700">
+                                                待消毒液完全干燥后，贴上新的无菌敷料。透明贴膜应覆盖穿刺点和导管固定翼，边缘无卷边。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">6</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">记录和固定</h4>
+                                            <p class="text-gray-700">
+                                                在敷料上标注更换日期和时间，用胶带妥善固定体外导管部分。
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section id="prcc-flushing" class="mb-10 scroll-mt-20">
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-tint text-primary mr-3"></i> 导管冲洗方法</h3>
+                            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                                <div class="bg-red-50 rounded-lg p-4 mb-6">
+                                    <h4 class="font-bold text-gray-800 mb-2 flex items-center"><i class="fa fa-exclamation-triangle text-danger mr-2"></i> 重要提醒</h4>
+                                    <p class="text-gray-700">
+                                        导管冲洗必须严格按照医护人员的指导进行，使用正确浓度的肝素盐水或生理盐水。
+                                    </p>
+                                </div>
+                                
+                                <div class="space-y-6">
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">1</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">准备冲洗液</h4>
+                                            <p class="text-gray-700">
+                                                准备10ml注射器和适量的生理盐水或肝素盐水（浓度遵医嘱）。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">2</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">消毒肝素帽</h4>
+                                            <p class="text-gray-700">
+                                                用酒精棉片擦拭肝素帽或无针接头，顺时针、逆时针各擦拭15秒。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">3</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">脉冲式冲洗</h4>
+                                            <p class="text-gray-700">
+                                                连接注射器，使用脉冲式手法（推一下、停一下）注入冲洗液，最后正压封管（边推注边拔针）。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">4</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">冲洗频率</h4>
+                                            <p class="text-gray-700">
+                                                一般情况下，无输液时每周冲洗1-2次；每次输液前后都需要冲洗导管。
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section id="prcc-complications" class="mb-10 scroll-mt-20">
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-exclamation-circle text-primary mr-3"></i> 常见并发症及处理</h3>
+                            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full border-collapse">
+                                        <thead>
+                                            <tr class="bg-gray-100">
+                                                <th class="border border-gray-300 p-3 text-left text-gray-800">并发症</th>
+                                                <th class="border border-gray-300 p-3 text-left text-gray-800">症状</th>
+                                                <th class="border border-gray-300 p-3 text-left text-gray-800">处理方法</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="border border-gray-300 p-3 text-gray-700 font-medium">感染</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">穿刺部位红肿、疼痛、渗液、发热</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">立即就医，可能需要使用抗生素或拔管</td>
+                                            </tr>
+                                            <tr class="bg-gray-50">
+                                                <td class="border border-gray-300 p-3 text-gray-700 font-medium">血栓形成</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">手臂肿胀、疼痛、皮肤温度升高</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">及时就医，进行超声检查，遵医嘱抗凝治疗</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 p-3 text-gray-700 font-medium">导管堵塞</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">输液速度减慢或无法输液，冲洗阻力大</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">不要强行推注，及时联系医护人员处理</td>
+                                            </tr>
+                                            <tr class="bg-gray-50">
+                                                <td class="border border-gray-300 p-3 text-gray-700 font-medium">导管移位</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">体外导管长度变化，输液疼痛，无法抽血</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">立即就医，进行X光检查确认位置</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 p-3 text-gray-700 font-medium">皮肤过敏</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">敷料周围皮肤发红、瘙痒、皮疹</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">告知医护人员，更换其他材质敷料</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section id="prcc-notes" class="mb-6 scroll-mt-20">
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-sticky-note text-primary mr-3"></i> 注意事项</h3>
+                            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                                <div class="bg-orange-50 rounded-lg p-4 mb-4">
+                                    <h4 class="font-bold text-gray-800 mb-3">紧急情况处理</h4>
+                                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                        <li>如发现导管断裂，立即用止血带在穿刺点上方扎紧，并尽快就医</li>
+                                        <li>如导管完全脱出体外，不要自行送回，用无菌纱布按压穿刺点并就医</li>
+                                        <li>出现严重疼痛、肿胀或呼吸困难时，立即拨打急救电话</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="bg-blue-50 rounded-lg p-4">
+                                    <h4 class="font-bold text-gray-800 mb-3">日常生活注意事项</h4>
+                                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                        <li>避免游泳、泡浴等可能导致敷料潮湿的活动</li>
+                                        <li>穿脱衣服时动作轻柔，避免牵拉导管</li>
+                                        <li>保持导管固定良好，避免打折、扭曲</li>
+                                        <li>携带导管维护手册和联系卡，注明置管医院和医生联系方式</li>
+                                        <li>定期到医院复诊，监测导管功能和位置</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 生成输液港维护指南内容
+        function generatePortGuide(mode) {
+            const isElderly = mode === 'elderly';
+            const headingSize = isElderly ? 'text-3xl' : 'text-2xl';
+            const subheadingSize = isElderly ? 'text-2xl' : 'text-xl';
+            
+            return `
+                <div>
+                    <h2 class="${headingSize} font-bold text-primary mb-6">输液港维护指南</h2>
+                    
+                    <div class="prose max-w-none ${isElderly ? 'elderly-mode' : ''}">
+                        <p class="mb-6 text-gray-700">
+                            输液港（Implantable Venous Access Port，简称PORT）是一种完全植入体内的静脉通路装置。正确的维护可以确保输液港长期安全使用，减少并发症的发生。
+                        </p>
+                        
+                        <div class="bg-green-50 rounded-lg p-6 mb-8">
+                            <h3 class="${subheadingSize} font-bold text-primary mb-4">目录</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li><a href="#port-basics" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 输液港基本知识</a></li>
+                                <li><a href="#port-daily-care" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 日常护理要点</a></li>
+                                <li><a href="#port-access" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 输液港使用（穿刺）</a></li>
+                                <li><a href="#port-flushing" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 导管冲洗与封管</a></li>
+                                <li><a href="#port-complications" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 常见并发症及处理</a></li>
+                                <li><a href="#port-notes" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 注意事项</a></li>
+                            </ul>
+                        </div>
+                        
+                        <section id="port-basics" class="mb-10 scroll-mt-20">
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-info-circle text-primary mr-3"></i> 输液港基本知识</h3>
+                            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                                <p class="mb-4 text-gray-700">
+                                    输液港由港体（药盒）和导管两部分组成，完全植入皮下。港体位于胸部皮下，导管末端位于上腔静脉。
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                                    <div class="bg-blue-100 rounded-lg p-4">
+                                        <h4 class="font-bold text-gray-800 mb-2">输液港的优点：</h4>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li>完全植入体内，不影响外观</li>
+                                            <li>可长期使用（通常可使用数年）</li>
+                                            <li>感染风险低</li>
+                                            <li>维护间隔时间长</li>
+                                            <li>不影响日常活动，包括游泳、洗澡</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-purple-100 rounded-lg p-4">
+                                        <h4 class="font-bold text-gray-800 mb-2">适用人群：</h4>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li>需要长期或反复输液治疗的患者</li>
+                                            <li>需要长期化疗的肿瘤患者</li>
+                                            <li>需要长期静脉营养支持的患者</li>
+                                            <li>外周静脉条件差的患者</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="relative overflow-hidden rounded-lg shadow-md">
+                                    <img src="https://picsum.photos/id/239/800/400" alt="输液港示意图" class="w-full h-auto object-cover">
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-3">
+                                        <p class="text-white text-center text-sm">输液港示意图</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section id="port-daily-care" class="mb-10 scroll-mt-20">
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-heartbeat text-primary mr-3"></i> 日常护理要点</h3>
+                            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="bg-green-50 rounded-lg p-4">
+                                        <h4 class="font-bold text-gray-800 mb-3">保持清洁</h4>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li>保持植入部位皮肤清洁干燥</li>
+                                            <li>可正常洗澡，但避免用力揉搓植入部位</li>
+                                            <li>穿刺后24小时内避免沾水</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-yellow-50 rounded-lg p-4">
+                                        <h4 class="font-bold text-gray-800 mb-3">观察植入部位</h4>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li>每天检查植入部位是否有红肿、疼痛</li>
+                                            <li>注意观察是否有渗液、硬结</li>
+                                            <li>如有异常及时联系医护人员</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-blue-50 rounded-lg p-4">
+                                        <h4 class="font-bold text-gray-800 mb-3">避免外力撞击</h4>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li>避免植入部位受到撞击或压迫</li>
+                                            <li>避免剧烈运动，如举重、拳击等</li>
+                                            <li>睡觉时避免长时间压迫植入侧</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-red-50 rounded-lg p-4">
+                                        <h4 class="font-bold text-gray-800 mb-3">定期维护</h4>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li>无治疗时每4周进行一次冲管和封管</li>
+                                            <li>每次使用后必须冲管和封管</li>
+                                            <li>记录维护日期和情况</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section id="port-access" class="mb-10 scroll-mt-20">
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-syringe text-primary mr-3"></i> 输液港使用（穿刺）</h3>
+                            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                                <div class="bg-red-50 rounded-lg p-4 mb-6">
+                                    <h4 class="font-bold text-gray-800 mb-2 flex items-center"><i class="fa fa-exclamation-triangle text-danger mr-2"></i> 重要提醒</h4>
+                                    <p class="text-gray-700">
+                                        输液港的穿刺必须由经过专业培训的医护人员进行，患者及家属切勿自行操作。
+                                    </p>
+                                </div>
+                                
+                                <p class="mb-4 text-gray-700">
+                                    输液港使用时需要使用专用的无损伤针（Huber针）进行穿刺，以下是医护人员操作的基本步骤：
+                                </p>
+                                
+                                <div class="space-y-6">
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">1</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">定位港体</h4>
+                                            <p class="text-gray-700">
+                                                医护人员通过触摸找到皮下的港体，确定穿刺部位。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">2</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">消毒皮肤</h4>
+                                            <p class="text-gray-700">
+                                                用酒精和碘伏消毒皮肤，范围至少10cm×10cm，待干。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">3</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">穿刺港体</h4>
+                                            <p class="text-gray-700">
+                                                使用无损伤针垂直刺入港体，直到触及港体底部，有落空感。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">4</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">固定针头</h4>
+                                            <p class="text-gray-700">
+                                                用无菌敷料固定针头，确保针头稳定不移动。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">5</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">确认通畅</h4>
+                                            <p class="text-gray-700">
+                                                抽回血确认导管通畅后，用生理盐水冲洗导管，然后连接输液装置。
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section id="port-flushing" class="mb-10 scroll-mt-20">
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-tint text-primary mr-3"></i> 导管冲洗与封管</h3>
+                            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                                <p class="mb-4 text-gray-700">
+                                    输液港的冲洗和封管是维护其功能的关键步骤，必须由医护人员操作。
+                                </p>
+                                
+                                <div class="space-y-6">
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">1</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">冲洗液准备</h4>
+                                            <p class="text-gray-700">
+                                                准备10ml注射器和适量的生理盐水、肝素盐水（通常浓度为100U/ml）。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">2</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">脉冲式冲洗</h4>
+                                            <p class="text-gray-700">
+                                                使用脉冲式手法注入10ml生理盐水，冲洗导管内壁，避免药物残留。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">3</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">正压封管</h4>
+                                            <p class="text-gray-700">
+                                                最后使用5ml肝素盐水正压封管（边推注边拔针），防止血液反流导致导管堵塞。
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex flex-col md:flex-row gap-4 items-start">
+                                        <div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shrink-0">
+                                            <span class="font-bold">4</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-gray-800 mb-2">维护频率</h4>
+                                            <p class="text-gray-700">
+                                                无治疗时：每4周维护一次<br>
+                                                有治疗时：每次治疗前后均需冲洗，治疗结束后封管
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section id="port-complications" class="mb-10 scroll-mt-20">
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-exclamation-circle text-primary mr-3"></i> 常见并发症及处理</h3>
+                            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full border-collapse">
+                                        <thead>
+                                            <tr class="bg-gray-100">
+                                                <th class="border border-gray-300 p-3 text-left text-gray-800">并发症</th>
+                                                <th class="border border-gray-300 p-3 text-left text-gray-800">症状</th>
+                                                <th class="border border-gray-300 p-3 text-left text-gray-800">处理方法</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="border border-gray-300 p-3 text-gray-700 font-medium">感染</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">植入部位红肿、疼痛、发热，可能有渗液</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">立即就医，使用抗生素治疗，严重时需取出输液港</td>
+                                            </tr>
+                                            <tr class="bg-gray-50">
+                                                <td class="border border-gray-300 p-3 text-gray-700 font-medium">血栓形成</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">肩部或上肢肿胀、疼痛，输液速度减慢</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">及时就医，进行超声检查，遵医嘱抗凝治疗</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 p-3 text-gray-700 font-medium">导管堵塞</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">无法抽回血，输液困难或无法输液</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">联系医护人员，可能需要溶栓治疗或更换输液港</td>
+                                            </tr>
+                                            <tr class="bg-gray-50">
+                                                <td class="border border-gray-300 p-3 text-gray-700 font-medium">港体翻转</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">植入部位隆起，触摸不到正常的港体轮廓</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">需要手术复位或更换输液港</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 p-3 text-gray-700 font-medium">皮肤坏死</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">港体上方皮肤发红、发黑、疼痛</td>
+                                                <td class="border border-gray-300 p-3 text-gray-700">立即就医，可能需要取出输液港，清创处理</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <section id="port-notes" class="mb-6 scroll-mt-20">
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-sticky-note text-primary mr-3"></i> 注意事项</h3>
+                            <div class="bg-white rounded-lg border border-gray-200 p-6">
+                                <div class="bg-orange-50 rounded-lg p-4 mb-4">
+                                    <h4 class="font-bold text-gray-800 mb-3">紧急情况处理</h4>
+                                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                        <li>如植入部位出现严重疼痛、肿胀、发热，立即就医</li>
+                                        <li>输液过程中如出现寒战、高热、呼吸困难，立即停止输液并就医</li>
+                                        <li>如发现港体移位或皮肤有破损，用无菌纱布覆盖并尽快就医</li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="bg-blue-50 rounded-lg p-4">
+                                        <h4 class="font-bold text-gray-800 mb-3">日常生活注意事项</h4>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li>可正常进行洗澡、游泳等活动</li>
+                                            <li>避免植入部位受到外力撞击或挤压</li>
+                                            <li>穿着宽松衣物，避免过紧的胸罩或腰带压迫港体</li>
+                                            <li>睡眠时避免长时间侧卧压迫植入部位</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-green-50 rounded-lg p-4">
+                                        <h4 class="font-bold text-gray-800 mb-3">长期维护须知</h4>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-700">
+                                            <li>随身携带输液港维护手册和联系卡</li>
+                                            <li>严格按照医护人员指导定期进行维护</li>
+                                            <li>告知所有医护人员您有植入式输液港</li>
+                                            <li>记录每次维护和使用的日期、情况</li>
+                                            <li>如长期不使用，仍需每4周维护一次</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // 为指南内容添加事件监听
+        function attachGuideEventListeners() {
+            // 平滑滚动到锚点
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        const navbarHeight = document.getElementById('navbar').offsetHeight;
+                        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight - 20;
+                        
+                        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+        
+        // 显示通知提示 - 优化移动端体验
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            
+            // 重置动画状态
+            notification.style.animation = 'none';
+            void notification.offsetWidth; // 触发重绘
+            
+            // 显示通知并添加淡入和缩放动画
+            notification.classList.remove('opacity-0', 'invisible');
+            notification.classList.add('opacity-100', 'visible');
+            notification.style.animation = 'fadeInScale 0.3s ease-out forwards';
+            
+            // 移动端触觉反馈
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+            
+            // 设置自动消失
+            setTimeout(() => {
+                // 添加淡出动画
+                notification.style.animation = 'fadeOutScale 0.3s ease-in forwards';
+                setTimeout(() => {
+                    notification.classList.remove('opacity-100', 'visible');
+                    notification.classList.add('opacity-0', 'invisible');
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
