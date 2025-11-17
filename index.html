@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>家庭医疗知识普及 - PRCC与输液港维护指南</title>
+    <title>家庭医疗知识普及 - PICC与输液港维护指南</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script>
@@ -179,7 +179,7 @@
             <div class="container mx-auto px-4 text-center">
                 <h2 class="text-[clamp(2rem,5vw,3.5rem)] font-bold text-primary mb-6 text-shadow">家庭医疗知识普及</h2>
                 <p class="text-[clamp(1.1rem,2vw,1.3rem)] text-gray-600 max-w-3xl mx-auto mb-10">
-                    专业的PRCC与输液港家庭维护指南，帮助您和家人安全、正确地进行日常护理
+                    专业的PICC与输液港家庭维护指南，帮助您和家人安全、正确地进行日常护理
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
                     <a href="#guide-selection" class="btn btn-hover bg-primary hover:bg-primary/90 text-white font-medium py-4 px-8 rounded-full shadow-lg flex items-center justify-center touch-target">
@@ -209,7 +209,7 @@
                         </div>
                         <div class="space-y-4">
                             <button onclick="switchToGuide('normal', 'prcc')" class="w-full btn btn-hover bg-primary hover:bg-primary/90 text-white py-4 px-6 rounded-lg shadow flex items-center justify-center touch-target">
-                                <i class="fa fa-heartbeat mr-2"></i> PRCC维护指南
+                                <i class="fa fa-heartbeat mr-2"></i> PICC维护指南
                             </button>
                             <button onclick="switchToGuide('normal', 'port')" class="w-full btn btn-hover bg-secondary hover:bg-secondary/90 text-white py-4 px-6 rounded-lg shadow flex items-center justify-center touch-target">
                                 <i class="fa fa-medkit mr-2"></i> 输液港维护指南
@@ -228,7 +228,7 @@
                         </div>
                         <div class="space-y-4">
                             <button onclick="switchToGuide('elderly', 'prcc')" class="w-full btn btn-hover bg-primary hover:bg-primary/90 text-white py-4 px-6 rounded-lg shadow flex items-center justify-center touch-target">
-                                <i class="fa fa-heartbeat mr-2"></i> PRCC维护指南
+                                <i class="fa fa-heartbeat mr-2"></i> PICC维护指南
                             </button>
                             <button onclick="switchToGuide('elderly', 'port')" class="w-full btn btn-hover bg-secondary hover:bg-secondary/90 text-white py-4 px-6 rounded-lg shadow flex items-center justify-center touch-target">
                                 <i class="fa fa-medkit mr-2"></i> 输液港维护指南
@@ -269,7 +269,7 @@
                         <div class="w-full md:w-2/3">
                             <h3 class="text-xl font-bold text-gray-800 mb-4">我们的使命</h3>
                             <p class="text-gray-600 mb-4">
-                                我们致力于为患者和家属提供专业、易懂的家庭医疗护理知识，特别是关于PRCC和输液港等长期静脉通路装置的维护指南。
+                                我们致力于为患者和家属提供专业、易懂的家庭医疗护理知识，特别是关于PICC和输液港等长期静脉通路装置的维护指南。
                             </p>
                             <p class="text-gray-600 mb-4">
                                 通过提供标准化、可视化的护理指导，帮助患者在家中安全地进行日常护理，减少并发症的发生，提高生活质量。
@@ -556,17 +556,17 @@
             
             return `
                 <div>
-                    <h2 class="${headingSize} font-bold text-primary mb-6">PRCC维护指南</h2>
+                    <h2 class="${headingSize} font-bold text-primary mb-6">PICC维护指南</h2>
                     
                     <div class="prose max-w-none ${isElderly ? 'elderly-mode' : ''}">
                         <p class="mb-6 text-gray-700">
-                            经外周静脉穿刺中心静脉导管（Peripherally Inserted Central Catheter，简称PRCC或PICC）是一种长期静脉通路装置。正确的家庭维护对于延长导管使用寿命、减少并发症至关重要。
+                            经外周静脉穿刺中心静脉导管（Peripherally Inserted Central Catheter，简称PICC）是一种长期静脉通路装置。正确的家庭维护对于延长导管使用寿命、减少并发症至关重要。
                         </p>
                         
                         <div class="bg-blue-50 rounded-lg p-6 mb-8">
                             <h3 class="${subheadingSize} font-bold text-primary mb-4">目录</h3>
                             <ul class="space-y-2 text-gray-700">
-                                <li><a href="#prcc-basics" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> PRCC基本知识</a></li>
+                                <li><a href="#prcc-basics" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> PICC基本知识</a></li>
                                 <li><a href="#prcc-daily-care" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 日常护理要点</a></li>
                                 <li><a href="#prcc-dressing-change" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 敷料更换步骤</a></li>
                                 <li><a href="#prcc-flushing" class="text-primary hover:underline flex items-center"><i class="fa fa-chevron-right mr-2 text-sm"></i> 导管冲洗方法</a></li>
@@ -576,13 +576,13 @@
                         </div>
                         
                         <section id="prcc-basics" class="mb-10 scroll-mt-20">
-                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-info-circle text-primary mr-3"></i> PRCC基本知识</h3>
+                            <h3 class="${subheadingSize} font-bold text-gray-800 mb-4 flex items-center"><i class="fa fa-info-circle text-primary mr-3"></i> PICC基本知识</h3>
                             <div class="bg-white rounded-lg border border-gray-200 p-6">
                                 <p class="mb-4 text-gray-700">
-                                    PRCC是一种从外周手臂静脉插入，末端位于上腔静脉或锁骨下静脉的导管。它可以用于长期输液、化疗、营养支持等治疗。
+                                    PICC是一种从外周手臂静脉插入，末端位于上腔静脉或锁骨下静脉的导管。它可以用于长期输液、化疗、营养支持等治疗。
                                 </p>
                                 <div class="bg-blue-100 rounded-lg p-4 mb-4">
-                                    <h4 class="font-bold text-gray-800 mb-2">PRCC的优点：</h4>
+                                    <h4 class="font-bold text-gray-800 mb-2">PICC的优点：</h4>
                                     <ul class="list-disc list-inside space-y-2 text-gray-700">
                                         <li>减少反复静脉穿刺的痛苦</li>
                                         <li>保护外周静脉</li>
@@ -591,9 +591,9 @@
                                     </ul>
                                 </div>
                                 <div class="relative overflow-hidden rounded-lg shadow-md mb-4">
-                                    <img src="https://nimg.ws.126.net/?url=http%3A%2F%2Fspider.ws.126.net%2F9fad9cd8fe041f5c1ab88fde11c2ba42.jpeg&thumbnail=660x2147483647&quality=80&type=jpg" alt="PRCC导管示意图" class="w-full h-auto object-cover">
+                                    <img src="https://nimg.ws.126.net/?url=http%3A%2F%2Fspider.ws.126.net%2F9fad9cd8fe041f5c1ab88fde11c2ba42.jpeg&thumbnail=660x2147483647&quality=80&type=jpg" alt="PICC导管示意图" class="w-full h-auto object-cover">
                                     <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 p-3">
-                                        <p class="text-white text-center text-sm">PRCC导管示意图</p>
+                                        <p class="text-white text-center text-sm">PICC导管示意图</p>
                                     </div>
                                 </div>
                             </div>
